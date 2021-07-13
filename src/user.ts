@@ -1,9 +1,10 @@
-import { renderBlock } from './lib.js'
+import { renderBlock } from './lib.js';
 
 export function renderUserBlock(userName: string, avatarUrl: string,
   favoriteItemsAmount: number): void {
-  const favoritesCaption = favoriteItemsAmount ? favoriteItemsAmount : 'ничего нет'
-  const hasFavoriteItems = favoriteItemsAmount ? true : false
+  favoriteItemsAmount = favoriteItemsAmount > 0 ? Math.trunc(favoriteItemsAmount) : 0;
+  const favoritesCaption = favoriteItemsAmount ? favoriteItemsAmount : 'ничего нет';
+  const hasFavoriteItems = favoriteItemsAmount ? true : false;
 
   renderBlock(
     'user-block',
@@ -18,5 +19,5 @@ export function renderUserBlock(userName: string, avatarUrl: string,
       </div>
     </div>
     `
-  )
+  );
 }

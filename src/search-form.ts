@@ -1,14 +1,23 @@
 import { renderBlock } from './lib.js'
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
+
+  function formatDate(dateToFormat: Date): string {
+    return dateToFormat.toLocaleDateString('ru').split('.').reverse().join('-');
+  }
+
   const nowDate = new Date();
   const maxDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0);
+  const nowDateStr = formatDate(nowDate);
+  const maxDateStr = formatDate(maxDate);
+
   if (!inDate) {
     inDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 1);
   }
   if (!outDate) {
     outDate = new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDate() + 2);
   }
+
   renderBlock(
     'search-form-block',
     `
@@ -29,17 +38,15 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
           <div>
             <label for="check-in-date">Дата заезда</label>
             <input id="check-in-date" type="date"
-            value=${inDate.toISOString().substring(0, 10)}
-            min=${nowDate.toISOString().substring(0, 10)}
-            max=${maxDate.toISOString().substring(0, 10)}
+            value=${formatDate(inDate)}
+            min=${nowDateStr} max=${maxDateStr}
             name="checkin" />
           </div>
           <div>
             <label for="check-out-date">Дата выезда</label>
             <input id="check-out-date" type="date"
-            value=${outDate.toISOString().substring(0, 10)}
-            min=${nowDate.toISOString().substring(0, 10)}
-            max=${maxDate.toISOString().substring(0, 10)}
+            value=${formatDate(outDate)}
+            min=${nowDateStr} max=${maxDateStr}
             name="checkout" />
           </div>
           <div>

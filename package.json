@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "serve": "rm -rf public/scripts && tsc -p tsconfig-dev.json",
+    "build-dev": "rm -rf public/scripts && tsc -p tsconfig-dev.json",
     "build": "rm -rf public/scripts && tsc",
     "start": "http-server -p 3000",
     "lint": "eslint src --ext .js --ext .ts",
