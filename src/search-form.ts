@@ -1,10 +1,7 @@
 import { renderBlock } from './lib.js'
+import { formatDate } from './date-helper.js'
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
-
-  function formatDate(dateToFormat: Date): string {
-    return dateToFormat.toLocaleDateString('ru').split('.').reverse().join('-');
-  }
 
   const nowDate = new Date();
   const maxDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0);
