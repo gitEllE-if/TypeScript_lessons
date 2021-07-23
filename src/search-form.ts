@@ -1,5 +1,6 @@
 import { renderBlock } from './lib.js'
 import { formatDate } from './date-helper.js'
+import { search } from './search.js'
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
 
@@ -18,13 +19,13 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
   renderBlock(
     'search-form-block',
     `
-    <form>
+    <form id="search-form">
       <fieldset class="search-filedset">
         <div class="row">
           <div>
             <label for="city">Город</label>
-            <input id="city" type="text" disabled value="Санкт-Петербург" />
-            <input type="hidden" disabled value="59.9386,30.3141" />
+            <input id="city" type="text" disabled value="Санкт-Петербург" name="city"/>
+            <input type="hidden" disabled value="59.9386,30.3141" name="coordinates"/>
           </div>
           <!--<div class="providers">
             <label><input type="checkbox" name="provider" value="homy" checked /> Homy</label>
@@ -51,11 +52,12 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
             <input id="max-price" type="text" value="" name="price" class="max-price" />
           </div>
           <div>
-            <div><button>Найти</button></div>
+            <div><button type="submit">Найти</button></div>
           </div>
         </div>
       </fieldset>
     </form>
     `
   )
+  document.forms['search-form'].addEventListener('submit', (event) => { search(event) });
 }
