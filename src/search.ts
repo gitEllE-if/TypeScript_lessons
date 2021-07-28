@@ -1,4 +1,5 @@
-import { SearchData } from './search-class.js';
+import { SearchData } from './search-class';
+import { get } from './request';
 
 export function search(event: Event): void {
   const formEl = <HTMLFormElement>event.target;
@@ -21,6 +22,7 @@ export function search(event: Event): void {
     }, 2000);
   }
   printSearchResult(searchData, callback);
+  get('/api/places/1?&coordinates=59.9386,30.3141').then(res => console.log(res));
 }
 
 interface Place {

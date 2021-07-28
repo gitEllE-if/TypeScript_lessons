@@ -1,5 +1,5 @@
-import { renderBlock } from './lib.js'
-import { formatDate } from './date-helper.js'
+import { renderBlock } from './lib'
+import { formatDate } from './date-helper'
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
 
