@@ -14,7 +14,7 @@ export class User {
 
   getUserData(data: unknown): UserData {
     const userData: UserData = { userName: 'unknown', avatarUrl: '/img/default.svg' };
-    let dataObj: any = {};
+    let dataObj: Partial<Record<'userName' | 'avatarUrl', string>> = {};
     try {
       switch (typeof (data)) {
         case 'undefined':

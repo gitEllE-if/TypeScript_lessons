@@ -10,13 +10,7 @@ export function search(event: Event): void {
       formData.set((<HTMLFormElement>elem).name, (<HTMLFormElement>elem).value);
     }
   }
-  const searchDataObj = Array.from(formData.entries()).reduce(
-    (acc, [key, val]) => {
-      acc[key] = val;
-      return acc;
-    }, {});
-
-  const searchData = new SearchData(searchDataObj);
+  const searchData = new SearchData(formData);
   const callback: SearchCallback = (error, plase) => {
     setTimeout(() => {
       if (error == null && plase != null) {

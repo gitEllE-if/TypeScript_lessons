@@ -9,47 +9,35 @@ interface SearchFormData {
 export class SearchData {
   searchFormData: SearchFormData;
 
-  constructor(searchFormDataRaw: unknown) {
+  constructor(searchFormDataRaw: FormData) {
     this.searchFormData = this.getSearchFormData(searchFormDataRaw);
   }
 
-  getSearchFormData(data: unknown): SearchFormData {
+  getSearchFormData(formData: FormData): SearchFormData {
     const searchFormData: SearchFormData = {
       city: '',
       coordinates: '',
       price: 0,
-      checkin: new Date(),
-      checkout: new Date()
+      checkin: null,
+      checkout: null
     };
-    let searchDataObj: any = {};
-
+    if (!formData) {
+      return searchFormData;
+    }
     try {
-      switch (typeof (data)) {
-        case 'undefined':
-          return searchFormData;
-        case 'string':
-          searchDataObj = JSON.parse(data);
-          break;
-        case 'object':
-          if (data === null || Array.isArray(data) || data instanceof Date) {
-            break;
-          }
-          searchDataObj = data;
-      }
-      for (const key in searchDataObj) {
-        if (key in searchFormData) {
+      for (const key in searchFormData) {
+        if (formData.has(key)) {
           switch (typeof (searchFormData[key])) {
-            case 'undefined':
-              break;
             case 'string':
-              searchFormData[key] = searchDataObj[key];
+              searchFormData[key] = formData.get(key);
               break;
-            case 'number':
-              searchFormData[key] = (isFinite(searchDataObj[key]) && !isNaN(searchDataObj[key])) ?
-                Number(searchDataObj[key]) : 0;
+            case 'number': {
+              const nbr = Number(formData.get(key));
+              searchFormData[key] = (isFinite(nbr) && !isNaN(nbr)) ? nbr : 0;
               break;
+            }
             case 'object':
-              searchFormData[key] = searchFormData[key] instanceof Date ? new Date(searchDataObj[key]) : null;
+              searchFormData[key] = new Date(String(formData.get(key)));
           }
         }
       }

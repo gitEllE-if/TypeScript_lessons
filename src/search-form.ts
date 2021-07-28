@@ -1,6 +1,5 @@
 import { renderBlock } from './lib.js'
 import { formatDate } from './date-helper.js'
-import { search } from './search.js'
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
 
@@ -59,5 +58,4 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
     </form>
     `
   )
-  document.forms['search-form'].addEventListener('submit', (event) => { search(event) });
 }
