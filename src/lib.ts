@@ -31,3 +31,8 @@ export function renderToast(message: { type: string, text: string },
     }
   }
 }
+
+export function insertBlock(elementId: string, html: string): void {
+  const element = document.getElementById(elementId);
+  element.insertAdjacentHTML('beforeend', html);
+}

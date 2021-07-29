@@ -1,5 +1,8 @@
 import { SearchData } from './search-class';
+import { renderSearchResultsBlock } from './search-results';
+import { dateToUnixStamp } from './date-helper';
 import { get } from './request';
+import { Place } from './Place';
 
 export function search(event: Event): void {
   const formEl = <HTMLFormElement>event.target;
@@ -12,38 +15,26 @@ export function search(event: Event): void {
     }
   }
   const searchData = new SearchData(formData);
-  const callback: SearchCallback = (error, plase) => {
-    setTimeout(() => {
-      if (error == null && plase != null) {
-        console.log('Success!', plase)
-      } else {
-        console.warn('Fail', error)
-      }
-    }, 2000);
+  const callback: SearchCallback = (error, place) => {
+    if (error == null && place != null) {
+      renderSearchResultsBlock(place);
+    } else {
+      console.warn('Fail', error)
+    }
   }
-  printSearchResult(searchData, callback);
-  get('/api/places/1?&coordinates=59.9386,30.3141').then(res => console.log(res));
-}
-
-interface Place {
-  data: unknown;     // TEMP to suppress the lint error 'empty interface'
+  putSearchResult(searchData, callback);
 }
 
 interface SearchCallback {
   (error?: Error, place?: Place[]): void
 }
 
-function searchRequest() {
-  const place: Place[] = [{ data: '' }];
-  return (Math.random() < 0.5) ?
-    Promise.resolve(place) : Promise.reject(Error)
-}
-
-function printSearchResult(data: SearchData, callback) {
-  console.log(data);
-  searchRequest()
-    .then((plase) => {
-      callback(null, plase)
+function putSearchResult(searchData: SearchData, callback: SearchCallback) {
+  get(`/api/places?&checkInDate=${dateToUnixStamp(searchData.searchFormData.checkin)}&` +
+    `checkOutDate=${dateToUnixStamp(searchData.searchFormData.checkout)}&` +
+    `coordinates=${searchData.searchFormData.coordinates}`)
+    .then((place: Place[]) => {
+      callback(null, place)
     })
     .catch((error) => {
       callback(error)

@@ -1,6 +1,6 @@
 interface SearchFormData {
   city: string;
-  coordinates: string;    // TODO {x: number, y: number}
+  coordinates: string;
   price: number;
   checkin: Date;
   checkout: Date;

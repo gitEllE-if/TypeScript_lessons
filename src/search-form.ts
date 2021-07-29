@@ -1,12 +1,12 @@
-import { renderBlock } from './lib'
-import { formatDate } from './date-helper'
+import { renderBlock } from './lib';
+import { dateToLocaleString } from './date-helper';
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
 
   const nowDate = new Date();
   const maxDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0);
-  const nowDateStr = formatDate(nowDate);
-  const maxDateStr = formatDate(maxDate);
+  const nowDateStr = dateToLocaleString(nowDate);
+  const maxDateStr = dateToLocaleString(maxDate);
 
   if (!inDate) {
     inDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 1);
@@ -35,14 +35,14 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
           <div>
             <label for="check-in-date">Дата заезда</label>
             <input id="check-in-date" type="date"
-            value=${formatDate(inDate)}
+            value=${dateToLocaleString(inDate)}
             min=${nowDateStr} max=${maxDateStr}
             name="checkin" />
           </div>
           <div>
             <label for="check-out-date">Дата выезда</label>
             <input id="check-out-date" type="date"
-            value=${formatDate(outDate)}
+            value=${dateToLocaleString(outDate)}
             min=${nowDateStr} max=${maxDateStr}
             name="checkout" />
           </div>
