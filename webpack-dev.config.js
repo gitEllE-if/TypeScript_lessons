@@ -46,7 +46,17 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader"],
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            url: false
+                        }
+                    }
+                ]
             },
             {
                 test: /\.ogg|mp3|wav|mpe?g|png|jpe?g|gif|svg$/i,
@@ -56,7 +66,7 @@ module.exports = {
                         if (process.env.NODE_ENV === 'development') {
                             return 'img/[name].[ext]';
                         }
-                        return 'img/[name].[contenthash].[ext]';
+                        return '[contenthash].[ext]';
                     }
                 }
             }

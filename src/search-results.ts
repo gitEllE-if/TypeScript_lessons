@@ -1,5 +1,6 @@
 import { renderBlock, insertBlock } from './lib';
 import { Place } from './Place';
+import { PlaceStorage } from './storage/storage-class';
 
 export function renderSearchStubBlock(): void {
   renderBlock(
@@ -25,7 +26,9 @@ export function renderEmptyOrErrorSearchBlock(reasonMessage: string): void {
   )
 }
 
-export function renderSearchResultsBlock(places: Place[]): void {
+export function renderSearchResultsBlock(places: Place[],
+  placeStorage: PlaceStorage,
+  toggleFavorite: (place: Place, stor: PlaceStorage) => void): void {
   renderBlock(
     'search-results-block',
     `
@@ -51,7 +54,7 @@ export function renderSearchResultsBlock(places: Place[]): void {
       <li class="result">
         <div class="result-container">
           <div class="result-img-container">
-            <div class="favorites active"></div>
+            <div class="favorites ${placeStorage.hasItem(place) ? ' active' : ''}" id=${place.id}></div>
             <img class="result-img" src=${place.image} alt="">
           </div>	
           <div class="result-info">
@@ -71,5 +74,6 @@ export function renderSearchResultsBlock(places: Place[]): void {
       </li>
       `
     );
+    document.getElementById(`${place.id}`).addEventListener('click', toggleFavorite.bind(null, place, placeStorage));
   }
 }

@@ -33,7 +33,7 @@ export class SearchData {
               break;
             case 'number': {
               const nbr = Number(formData.get(key));
-              searchFormData[key] = (isFinite(nbr) && !isNaN(nbr)) ? nbr : 0;
+              searchFormData[key] = (formData.get(key) && isFinite(nbr) && !isNaN(nbr)) ? nbr : null;
               break;
             }
             case 'object':

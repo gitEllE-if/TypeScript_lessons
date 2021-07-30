@@ -7,3 +7,5 @@ export interface Place {
   bookedDates: number[];
   price: number;
 }
+
+export type PartPlace = Omit<Place, 'description' | 'remoteness' | 'bookedDates' | 'price'>

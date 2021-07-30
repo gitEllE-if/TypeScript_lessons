@@ -1,8 +1,8 @@
 import { renderBlock } from './lib';
 import { dateToLocaleString } from './date-helper';
+import { search } from './search';
 
 export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
-
   const nowDate = new Date();
   const maxDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0);
   const nowDateStr = dateToLocaleString(nowDate);
@@ -18,7 +18,7 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
   renderBlock(
     'search-form-block',
     `
-    <form id="search-form">
+    <form id="search-form"
       <fieldset class="search-filedset">
         <div class="row">
           <div>
@@ -57,5 +57,6 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
       </fieldset>
     </form>
     `
-  )
+  );
+  document.forms['search-form'].addEventListener('submit', search);
 }
