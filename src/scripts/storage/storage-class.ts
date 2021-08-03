@@ -1,4 +1,5 @@
 import { PartPlace } from '../Place';
+import { UserData } from '../user/UserData';
 
 export class StorageHandler<V>{
   key: string;
@@ -57,4 +58,5 @@ export class PlaceMapStorage<V extends Map<number, PartPlace>> extends MapStorag
   }
 }
 
+export class UserStorage extends StorageHandler<UserData>{ }
 export class PlaceStorage extends PlaceMapStorage<Map<number, PartPlace>>{ }

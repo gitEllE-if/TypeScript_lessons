@@ -2,19 +2,22 @@ import { renderBlock } from './lib';
 import { dateToLocaleString } from './date-helper';
 import { search } from './search';
 
-export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
+export function putSearchForm(inDate: Date, outDate: Date): void {
   const nowDate = new Date();
   const maxDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0);
-  const nowDateStr = dateToLocaleString(nowDate);
-  const maxDateStr = dateToLocaleString(maxDate);
-
   if (!inDate) {
     inDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 1);
   }
   if (!outDate) {
     outDate = new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDate() + 2);
   }
+  renderSearchFormBlock(inDate, outDate, nowDate, maxDate);
+  document.forms['search-form'].addEventListener('submit', search);
+}
 
+function renderSearchFormBlock(inDate: Date, outDate: Date, minDate: Date, maxDate: Date): void {
+  const minDateStr = dateToLocaleString(minDate);
+  const maxDateStr = dateToLocaleString(maxDate);
   renderBlock(
     'search-form-block',
     `
@@ -36,14 +39,14 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
             <label for="check-in-date">Дата заезда</label>
             <input id="check-in-date" type="date"
             value=${dateToLocaleString(inDate)}
-            min=${nowDateStr} max=${maxDateStr}
+            min=${minDateStr} max=${maxDateStr}
             name="checkin" />
           </div>
           <div>
             <label for="check-out-date">Дата выезда</label>
             <input id="check-out-date" type="date"
             value=${dateToLocaleString(outDate)}
-            min=${nowDateStr} max=${maxDateStr}
+            min=${minDateStr} max=${maxDateStr}
             name="checkout" />
           </div>
           <div>
@@ -58,5 +61,4 @@ export function renderSearchFormBlock(inDate: Date, outDate: Date): void {
     </form>
     `
   );
-  document.forms['search-form'].addEventListener('submit', search);
 }

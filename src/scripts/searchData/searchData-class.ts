@@ -1,16 +1,19 @@
-interface SearchFormData {
+import { SearchFormData } from './SearchFormData';
+
+export class SearchData implements SearchFormData {
   city: string;
   coordinates: string;
   price: number;
   checkin: Date;
   checkout: Date;
-}
-
-export class SearchData {
-  searchFormData: SearchFormData;
 
   constructor(searchFormDataRaw: FormData) {
-    this.searchFormData = this.getSearchFormData(searchFormDataRaw);
+    const { city, coordinates, price, checkin, checkout } = this.getSearchFormData(searchFormDataRaw);
+    this.city = city;
+    this.coordinates = coordinates;
+    this.price = price;
+    this.checkin = checkin;
+    this.checkout = checkout;
   }
 
   getSearchFormData(formData: FormData): SearchFormData {

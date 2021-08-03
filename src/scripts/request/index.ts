@@ -1,18 +1,28 @@
 import { Place } from '../Place';
 
-export function get(url: string): Promise<any> {
+export interface BookResponce {
+  name: string;
+  message: string;
+  code: number
+}
+
+export interface Request<T> {
+  (url: string): Promise<T>
+}
+
+export const get: Request<Place[]> = url => {
   return fetch(url, {
     headers: { 'Content-Type': 'application/json' }
   })
     .then((response) => {
       return response.text();
     })
-    .then<Place | Place[]>((response) => {
+    .then<Place[]>((response) => {
       return JSON.parse(response);
     })
 }
 
-export function patch(url: string): Promise<any> {
+export const patch: Request<Place | BookResponce> = url => {
   return fetch(url, {
     method: 'PATCH',
     headers: {
@@ -22,7 +32,7 @@ export function patch(url: string): Promise<any> {
     .then((response) => {
       return response.text();
     })
-    .then((response) => {
+    .then<Place | BookResponce>((response) => {
       return JSON.parse(response);
     })
 }

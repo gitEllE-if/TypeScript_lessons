@@ -1,13 +1,13 @@
-import { renderSearchFormBlock } from './search-form';
-import { renderSearchStubBlock } from './search-results';
-import { renderUserBlock } from './user-render';
-import { user } from './user'
+import { putSearchForm } from './scripts/search-form';
+import { renderSearchStubBlock } from './scripts/search-results';
+import { renderUserBlock } from './scripts/user-render';
+import { user } from './scripts/user'
 
 import './styles/index.css';
 import './styles/reset.css';
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderUserBlock(user.userData.userName, user.userData.avatarUrl, user.favoritesAmount);
-  renderSearchFormBlock(undefined, undefined);
+  renderUserBlock(user.userName, user.avatarUrl, user.favoritesAmount);
+  putSearchForm(undefined, undefined);
   renderSearchStubBlock();
 });
