@@ -6,14 +6,16 @@ export class SearchData implements SearchFormData {
   price: number;
   checkin: Date;
   checkout: Date;
+  provider: string[];
 
   constructor(searchFormDataRaw: FormData) {
-    const { city, coordinates, price, checkin, checkout } = this.getSearchFormData(searchFormDataRaw);
+    const { city, coordinates, price, checkin, checkout, provider } = this.getSearchFormData(searchFormDataRaw);
     this.city = city;
     this.coordinates = coordinates;
     this.price = price;
     this.checkin = checkin;
     this.checkout = checkout;
+    this.provider = provider;
   }
 
   getSearchFormData(formData: FormData): SearchFormData {
@@ -21,8 +23,9 @@ export class SearchData implements SearchFormData {
       city: '',
       coordinates: '',
       price: 0,
-      checkin: null,
-      checkout: null
+      checkin: new Date(),
+      checkout: new Date(),
+      provider: []
     };
     if (!formData) {
       return searchFormData;
@@ -40,7 +43,12 @@ export class SearchData implements SearchFormData {
               break;
             }
             case 'object':
-              searchFormData[key] = new Date(String(formData.get(key)));
+              if (searchFormData[key] instanceof Date) {
+                searchFormData[key] = new Date(String(formData.get(key)));
+              }
+              else if (Array.isArray(searchFormData[key])) {
+                searchFormData[key] = formData.getAll(key);
+              }
           }
         }
       }

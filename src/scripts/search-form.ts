@@ -29,10 +29,10 @@ function renderSearchFormBlock(inDate: Date, outDate: Date, minDate: Date, maxDa
             <input id="city" type="text" disabled value="Санкт-Петербург" name="city"/>
             <input type="hidden" disabled value="59.9386,30.3141" name="coordinates"/>
           </div>
-          <!--<div class="providers">
+          <div class="providers">
             <label><input type="checkbox" name="provider" value="homy" checked /> Homy</label>
             <label><input type="checkbox" name="provider" value="flat-rent" checked /> FlatRent</label>
-          </div>--!>
+          </div>
         </div>
         <div class="row">
           <div>

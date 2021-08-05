@@ -2,6 +2,8 @@
   "name": "rental_app",
   "version": "1.0.0",
   "description": "",
+  "main": "./public/index.js",
+  "types": "./public/types/index.d.ts",
   "scripts": {
     "build-dev": "webpack --node-env=development --mode=development --config webpack-dev.config.js",
     "serve": "webpack serve --mode=development --config webpack-dev.config.js",

@@ -4,4 +4,5 @@ export interface SearchFormData {
   price: number;
   checkin: Date;
   checkout: Date;
+  provider: string[];
 }
