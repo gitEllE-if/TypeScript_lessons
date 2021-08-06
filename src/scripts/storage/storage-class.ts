@@ -1,4 +1,4 @@
-import { PartPlace } from '../Place';
+import { PartPlace } from '../types';
 import { UserData } from '../user/UserData';
 
 export class StorageHandler<V>{
@@ -37,7 +37,7 @@ export class MapStorage<V extends Map<number | string, unknown>> extends Iterabl
   }
 }
 
-export class PlaceMapStorage<V extends Map<number, PartPlace>> extends MapStorage<V>{
+export class PlaceMapStorage<V extends Map<number | string, PartPlace>> extends MapStorage<V>{
   toggleItem(place: PartPlace): void {
     let placeMap: V = this.get();
     if (!placeMap || !placeMap.size) {

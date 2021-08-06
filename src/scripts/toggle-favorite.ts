@@ -1,5 +1,6 @@
 import { renderUserFavoriteBlock } from './user-render';
-import { PartPlace, Place } from './Place';
+import { Place } from './Place';
+import { PartPlace } from './types';
 import { placeStorage } from './storage';
 import { user } from './user'
 

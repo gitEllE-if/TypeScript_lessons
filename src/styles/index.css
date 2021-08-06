@@ -328,3 +328,6 @@ span.forward {
 .info-block p {
     margin-bottom: 16px;    
 }
+.invisible{
+    visibility: hidden;
+}

@@ -12,11 +12,15 @@ export interface Flat {
     photos: string[];
     coordinates: number[];
     bookedDates: Date[];
-    price: number;
+    price?: number;
+    totalPrice?: number;
 }
 
-export function get(id: string): Promise<Flat>
+export class FlatRentSdk {
 
-export function search(parameters: SearchParameters): Flat[]
+    get(id: string): Promise<Flat>
 
-export function book(flatId: number, checkInDate: Date, checkOutDate: Date): number
+    search(parameters: SearchParameters): Promise<Flat[]>
+
+    book(flatId: number, checkInDate: Date, checkOutDate: Date): number
+}

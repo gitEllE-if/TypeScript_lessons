@@ -3,6 +3,7 @@ import { Place } from './Place';
 import { placeStorage } from './storage';
 import { book } from './book';
 import { toggleFavorite } from './toggle-favorite';
+import { Flat } from './flat-rent-sdk/flat-rent-sdk';
 
 export function renderSearchStubBlock(): void {
   renderBlock(
@@ -64,7 +65,9 @@ export function renderSearchResultsItem(place: Place, placeInFavorite: boolean):
             <p>${place.name}</p>
             <p class="price">${place.price}&#8381;</p>
           </div>
-          <div class="result-info--map"><i class="map-icon"></i> ${place.remoteness}км от вас</div>
+          <div class="${place.remoteness ? 'result-info--map' : 'invisible'}">
+            <i class="map-icon"></i> ${place.remoteness}км от вас
+          </div>
           <div class="result-info--descr">${place.description}</div>
           <div class="result-info--footer">
             <div>
@@ -78,10 +81,23 @@ export function renderSearchResultsItem(place: Place, placeInFavorite: boolean):
   );
 }
 
-export function putSearchResults(places: Place[]): void {
-  renderSearchResultsBlock();
-  for (const place of places) {
-    renderSearchResultsItem(place, placeStorage.hasItem(place))
+export function putSearchResultsItems(places: Place[] | Flat[]): void {
+  for (let place of places) {
+    {
+      if ((<Flat>place).title) {
+        if ((<Flat>place).totalPrice) {
+          (<Flat>place).price = (<Flat>place).totalPrice;
+        }
+        place = <Place>{
+          ...place,
+          image: (<Flat>place).photos[0],
+          name: (<Flat>place).title,
+          description: (<Flat>place).details,
+          remoteness: null
+        }
+      }
+    }
+    renderSearchResultsItem(<Place>place, placeStorage.hasItem(<Place>place))
     document.getElementById(`favorite${place.id}`).addEventListener('click', toggleFavorite.bind(null, place));
     document.getElementById(`book-btn${place.id}`).addEventListener('click', book.bind(null, place));
   }
