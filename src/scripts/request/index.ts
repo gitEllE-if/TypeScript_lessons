@@ -1,6 +1,6 @@
 import { Place } from '../Place';
 
-export interface BookResponce {
+export interface ErrorResponse {
   name: string;
   message: string;
   code: number
@@ -17,12 +17,18 @@ export const get: Request<Place[]> = url => {
     .then((response) => {
       return response.text();
     })
-    .then<Place[]>((response) => {
+    .then<Place[] | ErrorResponse>((response) => {
       return JSON.parse(response);
+    })
+    .then<Place[]>((response) => {
+      if ((<ErrorResponse>response).code) {
+        throw new Error((<ErrorResponse>response).message)
+      }
+      return <Place[]>response
     })
 }
 
-export const patch: Request<Place | BookResponce> = url => {
+export const patch: Request<Place> = url => {
   return fetch(url, {
     method: 'PATCH',
     headers: {
@@ -32,7 +38,13 @@ export const patch: Request<Place | BookResponce> = url => {
     .then((response) => {
       return response.text();
     })
-    .then<Place | BookResponce>((response) => {
+    .then<Place | ErrorResponse>((response) => {
       return JSON.parse(response);
+    })
+    .then<Place>((response) => {
+      if ((<ErrorResponse>response).code) {
+        throw new Error((<ErrorResponse>response).message)
+      }
+      return <Place>response
     })
 }

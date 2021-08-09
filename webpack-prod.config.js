@@ -6,16 +6,17 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.ts$/,
                 exclude: /node_modules/,
+                enforce: 'pre',
                 use:
                 {
                     loader: 'ts-loader',
                     options: {
-                        configFile: 'tsconfig-dev.json'
+                        configFile: 'tsconfig.json'
                     }
                 }
-            },
+            }
         ],
     }
 });

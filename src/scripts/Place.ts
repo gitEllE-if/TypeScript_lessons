@@ -8,4 +8,4 @@ export interface Place {
   price: number;
 }
 
-export type PartPlace = Omit<Place, 'description' | 'remoteness' | 'bookedDates' | 'price'>
+export type PartPlace = Pick<Place, 'id' | 'image' | 'name'>
