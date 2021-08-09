@@ -1,14 +1,16 @@
-interface UserData {
+import { SearchData } from '../searchData/searchData-class';
+import { UserData } from './UserData';
+
+export class User implements UserData {
   userName: string;
   avatarUrl: string;
-}
-
-export class User {
-  userData: UserData;
   favoritesAmount: number;
+  searchData?: SearchData;
 
   constructor(userDataRaw: unknown, favoritesAmountRaw: unknown) {
-    this.userData = this.getUserData(userDataRaw);
+    const { userName, avatarUrl } = this.getUserData(userDataRaw);
+    this.userName = userName;
+    this.avatarUrl = avatarUrl;
     this.favoritesAmount = this.getFavoritesAmount(favoritesAmountRaw);
   }
 

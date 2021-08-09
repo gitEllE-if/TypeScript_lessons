@@ -1,21 +1,13 @@
-import { renderSearchFormBlock } from './search-form.js';
-import { renderSearchStubBlock } from './search-results.js';
-import { renderUserBlock } from './user.js';
-import { renderToast } from './lib.js';
-import { User } from './user-class.js';
-import { search } from './search.js'
+import { putSearchForm } from './scripts/search-form';
+import { renderSearchStubBlock } from './scripts/search-results';
+import { renderUserBlock } from './scripts/user-render';
+import { user } from './scripts/user'
+
+import './styles/index.css';
+import './styles/reset.css';
 
 window.addEventListener('DOMContentLoaded', () => {
-  // localStorage.setItem('favoritesAmount', '2');
-  // localStorage.setItem('user', JSON.stringify({ userName: 'EllE', avatarUrl: '/img/avatar.png' }));
-
-  const user = new User(localStorage.getItem('user'), localStorage.getItem('favoritesAmount'));
-  renderUserBlock(user.userData.userName, user.userData.avatarUrl, user.favoritesAmount);
-  renderSearchFormBlock(undefined, undefined);
-  document.forms['search-form'].addEventListener('submit', (event: Event) => { search(event) });
+  renderUserBlock(user.userName, user.avatarUrl, user.favoritesAmount);
+  putSearchForm();
   renderSearchStubBlock();
-  renderToast(
-    { text: 'Это пример уведомления. Используйте его при необходимости', type: 'success' },
-    { name: 'Понял(а)', handler: () => { console.log('Уведомление закрыто') } }
-  );
 });
