@@ -8,6 +8,6 @@ import './styles/reset.css';
 
 window.addEventListener('DOMContentLoaded', () => {
   renderUserBlock(user.userName, user.avatarUrl, user.favoritesAmount);
-  putSearchForm(undefined, undefined);
+  putSearchForm();
   renderSearchStubBlock();
 });

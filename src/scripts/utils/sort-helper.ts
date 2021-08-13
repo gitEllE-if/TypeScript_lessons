@@ -7,3 +7,7 @@ export function ascendingPriceCompare(a: Place, b: Place): number {
 export function descendingPriceCompare(a: Place, b: Place): number {
   return b.price - a.price;
 }
+
+export function ascendingRemotenessCompare(a: Place, b: Place): number {
+  return a.remoteness - b.remoteness;
+}
