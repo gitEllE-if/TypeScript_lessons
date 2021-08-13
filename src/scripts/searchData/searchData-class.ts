@@ -1,13 +1,14 @@
-import { Provider } from '../types';
+import { ProviderName } from '../providers';
 import { SearchFormData } from './SearchFormData';
 
 export class SearchData implements SearchFormData {
+  id: string;
   city: string;
   coordinates: string;
   price: number;
   checkin: Date;
   checkout: Date;
-  provider: Provider[];
+  provider: ProviderName[];
 
   constructor(searchFormDataRaw: FormData) {
     const { city, coordinates, price, checkin, checkout, provider } = this.getSearchFormData(searchFormDataRaw);

@@ -1,5 +1,5 @@
 import { renderBlock } from './lib';
-import { dateToLocaleString } from './date-helper';
+import { dateToLocaleString } from './utils/date-helper';
 import { search } from './search';
 
 export function putSearchForm(inDate: Date, outDate: Date): void {

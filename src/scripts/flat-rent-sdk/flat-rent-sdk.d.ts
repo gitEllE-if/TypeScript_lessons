@@ -1,26 +1,28 @@
 export interface SearchParameters {
-    city: string;
-    checkInDate: Date;
-    checkOutDate: Date;
-    priceLimit: number;
+  city: string;
+  checkInDate: Date;
+  checkOutDate: Date;
+  priceLimit: number;
 }
 
+export type BookParameters = [string, Date, Date];
+
 export interface Flat {
-    id: string;
-    title: string;
-    details: string;
-    photos: string[];
-    coordinates: number[];
-    bookedDates: Date[];
-    price?: number;
-    totalPrice?: number;
+  id: string;
+  title: string;
+  details: string;
+  photos: string[];
+  coordinates: [number, number];
+  bookedDates: number[];
+  price?: number;
+  totalPrice?: number;
 }
 
 export class FlatRentSdk {
 
-    get(id: string): Promise<Flat>
+  get(id: string): Promise<Flat>
 
-    search(parameters: SearchParameters): Promise<Flat[]>
+  search(parameters: SearchParameters): Promise<Flat[]>
 
-    book(flatId: number, checkInDate: Date, checkOutDate: Date): number
+  book(...bookParameters: BookParameters): Promise<number>
 }

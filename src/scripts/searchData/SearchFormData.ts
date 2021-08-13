@@ -1,4 +1,4 @@
-import { Provider } from "../types";
+import { ProviderName } from '../providers';
 
 export interface SearchFormData {
   city: string;
@@ -6,5 +6,5 @@ export interface SearchFormData {
   price: number;
   checkin: Date;
   checkout: Date;
-  provider: Provider[];
+  provider: ProviderName[];
 }

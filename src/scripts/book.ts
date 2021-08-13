@@ -1,43 +1,21 @@
 import { renderToast } from './lib';
-import { dateToUnixStamp } from './date-helper';
-import { patch, BookResponce } from './request';
-import { Callback } from './Callback';
-import { Place } from './Place';
+import { Place } from './domain/place';
 import { user } from './user';
+import { PROVIDERS } from './providers';
 
-const bookCallback: Callback<Place | BookResponce> = (error, place) => {
-  if (error == null && place != null) {
-    if ((<Place>place).id) {
+export function book(place: Place): void {
+  user.searchData.id = place.originalId;
+  PROVIDERS[place.getProvider()].book(user.searchData)
+    .then((place) => {
       renderToast(
         { text: `Успешно забронировано: ${place.name}`, type: 'success' },
         { name: null, handler: null }
       );
-    }
-    else {
-      renderToast(
-        { text: `Не удалось забронировать: ${(<BookResponce>place)?.message}`, type: 'error' },
-        { name: null, handler: null }
-      );
-    }
-  } else {
-    console.warn('Fail', error);
-    renderToast(
-      { text: 'Произошла ошибка', type: 'error' },
-      { name: null, handler: null }
-    );
-  }
-}
-
-export function book(place: Place): void {
-  const url = `/api/places/${place.id}` +
-    `?checkInDate=${dateToUnixStamp(user?.searchData.checkin)}&` +
-    `checkOutDate=${dateToUnixStamp(user?.searchData.checkout)}`;
-
-  patch(url)
-    .then((place) => {
-      bookCallback(null, place);
     })
     .catch((error) => {
-      bookCallback(error)
+      renderToast(
+        { text: `Не удалось забронировать: ${error}`, type: 'error' },
+        { name: null, handler: null }
+      );
     })
 }

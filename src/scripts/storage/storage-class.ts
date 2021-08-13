@@ -1,4 +1,4 @@
-import { PartPlace } from '../types';
+import { PartPlace } from '../domain/place';
 import { UserData } from '../user/UserData';
 
 export class StorageHandler<V>{

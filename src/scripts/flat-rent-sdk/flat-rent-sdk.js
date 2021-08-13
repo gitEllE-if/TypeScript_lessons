@@ -4,7 +4,7 @@ const database = [
         title: 'Radisson Royal Hotel',
         details: 'Отель расположен в 4 минутах ходьбы от станции метро «Маяковская». К услугам гостей фитнес-центр и спа-центр с сауной и гидромассажной ванной.',
         photos: ['vnd331.png', 'vnd331.png'],
-        coordinates: [59.9322936,30.3460129],
+        coordinates: [59.9322936, 30.3460129],
         bookedDates: [],
         price: 12000
     },
@@ -13,7 +13,7 @@ const database = [
         title: 'Номера на Садовой',
         details: 'Расположен в 7 минутах ходьбы от Невского проспекта. К услугам гостей круглосуточная стойка регистрации и бесплатный Wi-Fi.',
         photos: ['ab2e2.png', 'ab2e2.png'],
-        coordinates: [59.930325,30.3291592],
+        coordinates: [59.930325, 30.3291592],
         bookedDates: [],
         price: 4500
     },
@@ -22,7 +22,7 @@ const database = [
         title: 'Мини Отель на Невском 136',
         details: 'Мини-отель расположен в Санкт-Петербурге, в 5 минутах ходьбы от станции метро «Площадь Восстания» и Московского железнодорожного вокзала.',
         photos: ['mvm32l.png', 'mvm32l.png'],
-        coordinates: [59.9299603,30.3658932],
+        coordinates: [59.9299603, 30.3658932],
         bookedDates: [],
         price: 3800
     },
@@ -31,7 +31,7 @@ const database = [
         title: 'Отель Усадьба Державина',
         details: 'Прекрасный отель недалеко от Исаакиевского собора с бесплатным Wi-Fi на всей территории.',
         photos: ['bvep12.png', 'bvep12.png'],
-        coordinates: [59.9194966,30.309389],
+        coordinates: [59.9194966, 30.309389],
         bookedDates: [],
         price: 8700
     }
@@ -97,22 +97,22 @@ export class FlatRentSdk {
                 if (parameters.priceLimit != null && (isNaN(parameters.priceLimit) || !isFinite(parameters.priceLimit))) {
                     throw new Error(`Passed invalid price limit - "${parameters.priceLimit}".`)
                 }
-        
+
                 let flats = this.database
-        
+
                 if (parameters.priceLimit != null) {
                     flats = flats.filter((flat) => {
                         return flat.price <= parameters.priceLimit
                     })
                 }
-        
+
                 const dateRange = this._generateDateRange(parameters.checkInDate, parameters.checkOutDate)
                 flats = flats.filter((flat) => {
                     return this._areAllDatesAvailable(flat, dateRange)
                 })
-        
+
                 flats = flats.map((flat) => {
-                   return this._formatFlatObject(flat, dateRange.length - 1)
+                    return this._formatFlatObject(flat, dateRange.length - 1)
                 })
 
                 resolve(flats)
@@ -125,7 +125,7 @@ export class FlatRentSdk {
     /**
      * Book flat.
      * 
-     * @param {number} flatId 
+     * @param {string} flatId 
      * @param {Date} checkInDate 
      * @param {Date} checkOutDate
      * @returns {number}
@@ -136,17 +136,17 @@ export class FlatRentSdk {
                 const flat = this.database.find((item) => {
                     return item.id === flatId
                 })
-        
+
                 if (flat == null) {
                     throw new Error('There is no flat with ID "' + flatId + '".')
                 }
                 this._assertDatesAreCorrect(checkInDate, checkOutDate)
-        
+
                 const datesToBook = this._generateDateRange(checkInDate, checkOutDate)
                 if (!this._areAllDatesAvailable(flat, datesToBook)) {
                     throw new Error(`Flat ${flat.id} is not available for dates ${datesToBook.join(",")}.`)
                 }
-        
+
                 const bookedDates = datesToBook.map((date) => {
                     return date.getTime()
                 })
@@ -158,7 +158,7 @@ export class FlatRentSdk {
                     }
                 }
                 this._writeDatabase(this.database)
-        
+
                 resolve(this._generateTransactionId())
             } catch (error) {
                 reject(error)
@@ -199,12 +199,12 @@ export class FlatRentSdk {
     _generateDateRange(from, to) {
         const dates = []
         const differenceInDays = this._calculateDifferenceInDays(from, to)
-        
+
         dates.push(new Date(from.getFullYear(), from.getMonth(), from.getDate()))
         for (let i = 1; i <= differenceInDays; i++) {
-          dates.push(new Date(from.getFullYear(), from.getMonth(), from.getDate() + i))
+            dates.push(new Date(from.getFullYear(), from.getMonth(), from.getDate() + i))
         }
-    
+
         return dates
     }
 
@@ -212,7 +212,7 @@ export class FlatRentSdk {
         const min = 1000
         const max = 9999
         const num = Math.random() * (max - min) + min
-    
+
         return Math.floor(num)
     }
 

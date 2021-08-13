@@ -5,6 +5,7 @@
   "main": "./public/index.js",
   "types": "./public/types/index.d.ts",
   "scripts": {
+    "build": "webpack --node-env=production --mode=production --config webpack-prod.config.js",
     "build-dev": "webpack --node-env=development --mode=development --config webpack-dev.config.js",
     "serve": "webpack serve --mode=development --config webpack-dev.config.js",
     "lint": "eslint src --ext .js --ext .ts",
