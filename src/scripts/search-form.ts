@@ -2,7 +2,7 @@ import { renderBlock } from './lib';
 import { dateToLocaleString } from './utils/date-helper';
 import { search } from './search';
 
-export function putSearchForm(inDate: Date, outDate: Date): void {
+export function putSearchForm(inDate?: Date, outDate?: Date): void {
   const nowDate = new Date();
   const maxDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0);
   if (!inDate) {
