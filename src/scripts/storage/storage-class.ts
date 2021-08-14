@@ -37,7 +37,7 @@ export class MapStorage<V extends Map<number | string, unknown>> extends Iterabl
   }
 }
 
-export class PlaceMapStorage<V extends Map<number | string, PartPlace>> extends MapStorage<V>{
+export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorage<V>{
   toggleItem(place: PartPlace): void {
     let placeMap: V = this.get();
     if (!placeMap || !placeMap.size) {
@@ -59,4 +59,4 @@ export class PlaceMapStorage<V extends Map<number | string, PartPlace>> extends 
 }
 
 export class UserStorage extends StorageHandler<UserData>{ }
-export class PlaceStorage extends PlaceMapStorage<Map<number, PartPlace>>{ }
+export class PlaceStorage extends PlaceMapStorage<Map<string, PartPlace>>{ }

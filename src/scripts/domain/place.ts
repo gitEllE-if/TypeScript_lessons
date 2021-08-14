@@ -23,8 +23,4 @@ export class Place {
   }
 }
 
-export interface PartPlace {
-  id: string;
-  name: string;
-  image: string;
-}
+export type PartPlace = Pick<Place, 'id' | 'name' | 'image'>
