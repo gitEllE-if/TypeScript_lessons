@@ -36,10 +36,10 @@ export function renderSearchResultsBlock(): void {
         <p>Результаты поиска</p>
         <div class="search-results-filter">
             <span><i class="icon icon-filter"></i> Сортировать:</span>
-            <select>
-                <option selected="">Сначала дешёвые</option>
-                <option selected="">Сначала дорогие</option>
-                <option>Сначала ближе</option>
+            <select id="search-results-sorting">
+                <option value="ascendingPrice" selected="selected">Сначала дешёвые</option>
+                <option value="descendingPrice">Сначала дорогие</option>
+                <option value="ascendingRemoteness">Сначала ближе</option>
             </select>
         </div>
     </div>
@@ -78,6 +78,10 @@ export function renderSearchResultsItem(place: Place, placeInFavorite: boolean):
     </li>
     `
   );
+}
+
+export function clearSearchResultsItems(): void {
+  renderBlock('search-result-list', '');
 }
 
 export function putSearchResultsItems(places: Place[]): void {
