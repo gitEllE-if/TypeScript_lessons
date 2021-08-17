@@ -2,10 +2,10 @@ import { SearchData } from '../searchData/searchData-class';
 import { UserData } from './UserData';
 
 export class User implements UserData {
-  userName: string;
-  avatarUrl: string;
-  favoritesAmount: number;
-  searchData?: SearchData;
+  public readonly userName: string;
+  public readonly avatarUrl: string;
+  public favoritesAmount: number;
+  public searchData?: SearchData;
 
   constructor(userDataRaw: unknown, favoritesAmountRaw: unknown) {
     const { userName, avatarUrl } = this.getUserData(userDataRaw);
@@ -14,7 +14,7 @@ export class User implements UserData {
     this.favoritesAmount = this.getFavoritesAmount(favoritesAmountRaw);
   }
 
-  getUserData(data: unknown): UserData {
+  private getUserData(data: unknown): UserData {
     const userData: UserData = { userName: 'unknown', avatarUrl: '/img/default.svg' };
     let dataObj: Partial<Record<'userName' | 'avatarUrl', string>> = {};
     try {
@@ -43,7 +43,7 @@ export class User implements UserData {
     }
   }
 
-  getFavoritesAmount(data: unknown): number {
+  private getFavoritesAmount(data: unknown): number {
     const nbr = Number(data);
     return !isNaN(nbr) && isFinite(nbr) && nbr > 0 ? Math.trunc(nbr) : 0;
   }

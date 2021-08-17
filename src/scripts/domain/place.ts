@@ -1,4 +1,9 @@
+import { book } from "../book";
+import { toggleFavorite } from "../toggle-favorite";
+
 export class Place {
+  public readonly toggleFavEventHandler = toggleFavorite.bind(null, this);
+  public readonly bookEventHandler = book.bind(null, this);
   constructor(
     private readonly provider: string,
     public readonly originalId: string,

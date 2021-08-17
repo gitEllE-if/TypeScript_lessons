@@ -36,3 +36,15 @@ export function insertBlock(elementId: string, html: string): void {
   const element = document.getElementById(elementId);
   element.insertAdjacentHTML('beforeend', html);
 }
+
+export function removeBlockChilds(elementId: string): void {
+  const element = document.getElementById(elementId);
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+}
+
+export function removeBlock(elementId: string): void {
+  removeBlockChilds(elementId);
+  document.getElementById(elementId).remove();
+}

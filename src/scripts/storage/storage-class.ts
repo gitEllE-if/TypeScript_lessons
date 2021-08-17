@@ -2,14 +2,17 @@ import { PartPlace } from '../domain/place';
 import { UserData } from '../user/UserData';
 
 export class StorageHandler<V>{
-  key: string;
-  constructor(key: string) {
-    this.key = key;
+  constructor(
+    private readonly key: string
+  ) { }
+  public getKey(): string {
+    return this.key;
   }
-  set(value: V): void {
+  public set(value: V): void {
     localStorage.setItem(this.key, JSON.stringify(value));
   }
-  get(): V {
+
+  public get(): V {
     const valueStr: string = localStorage.getItem(this.key);
     if (!valueStr) {
       return null;
@@ -25,20 +28,20 @@ export class StorageHandler<V>{
 }
 
 export class IterableStorage<V extends Iterable<unknown>> extends StorageHandler<Iterable<unknown>> {
-  set(value: V): void {
+  public set(value: V): void {
     super.set(Array.from(value));
   }
 }
 
 export class MapStorage<V extends Map<number | string, unknown>> extends IterableStorage<V>{
-  get(): V {
+  public get(): V {
     const value = <V>super.get();
     return value ? <V>new Map(value) : null;
   }
 }
 
 export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorage<V>{
-  toggleItem(place: PartPlace): void {
+  public toggleItem(place: PartPlace): void {
     let placeMap: V = this.get();
     if (!placeMap || !placeMap.size) {
       placeMap = <V>new Map([[place.id, place]]);
@@ -48,11 +51,11 @@ export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorag
     }
     this.set(<V>placeMap);
   }
-  hasItem(place: PartPlace): boolean {
+  public hasItem(place: PartPlace): boolean {
     const placeMap: V = this.get();
     return placeMap && placeMap.size && placeMap.has(place.id);
   }
-  itemAmount(): number {
+  public itemAmount(): number {
     const placeMap: V = this.get();
     return placeMap ? placeMap.size : 0;
   }
