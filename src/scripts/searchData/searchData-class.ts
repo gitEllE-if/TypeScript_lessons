@@ -2,13 +2,13 @@ import { ProviderName } from '../providers';
 import { SearchFormData } from './SearchFormData';
 
 export class SearchData implements SearchFormData {
-  id: string;
-  city: string;
-  coordinates: string;
-  price: number;
-  checkin: Date;
-  checkout: Date;
-  provider: ProviderName[];
+  public id?: string;
+  public readonly city: string;
+  public readonly coordinates: string;
+  public readonly price: number;
+  public readonly checkin: Date;
+  public readonly checkout: Date;
+  public readonly provider: ProviderName[];
 
   constructor(searchFormDataRaw: FormData) {
     const { city, coordinates, price, checkin, checkout, provider } = this.getSearchFormData(searchFormDataRaw);
@@ -20,7 +20,7 @@ export class SearchData implements SearchFormData {
     this.provider = provider;
   }
 
-  getSearchFormData(formData: FormData): SearchFormData {
+  private getSearchFormData(formData: FormData): SearchFormData {
     const searchFormData: SearchFormData = {
       city: '',
       coordinates: '',

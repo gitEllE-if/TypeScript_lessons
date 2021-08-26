@@ -1,9 +1,12 @@
-import { putSearchResultsItems, renderEmptyOrErrorSearchBlock, renderSearchResultsBlock } from './search-results';
+import {
+  delSearchResultsItems, putSearchResultsItems,
+  renderEmptyOrErrorSearchBlock, renderSearchResultsBlock
+} from './search-results';
 import { SearchData } from './searchData/searchData-class';
 import { Place } from './domain/place';
 import { user } from './user'
 import { PROVIDERS } from './providers';
-import { descendingPriceCompare } from './utils/sort-helper';
+import { ascendingPriceCompare, SORTING } from './utils/sort-helper';
 
 export function search(event: Event): void {
   const formEl = <HTMLFormElement>event.target;
@@ -25,12 +28,26 @@ export function search(event: Event): void {
   Promise.all(providersArr)
     .then((results) => {
       const places: Place[] = [].concat(...results);
-      places.sort(descendingPriceCompare);
-      places.length ?
-        putSearchResultsItems(places) :
+      places.sort(ascendingPriceCompare);
+      if (places.length) {
+        document.querySelector('#search-results-sorting')
+          .addEventListener('change', putSortingSearchResultsItems.bind(null, places));
+        putSearchResultsItems(places);
+      }
+      else {
         renderEmptyOrErrorSearchBlock('По вашему запросу ничего не найдено');
+      }
     })
     .catch((error) => {
       renderEmptyOrErrorSearchBlock(`Запрос не удался. ${error}`);
     })
+}
+
+export function putSortingSearchResultsItems(places: Place[], event: Event): void {
+  const sortEl = <HTMLSelectElement>event.target;
+  if (sortEl && sortEl.options) {
+    places.sort(SORTING[sortEl.options[sortEl.options.selectedIndex].value]);
+    delSearchResultsItems(places);
+    putSearchResultsItems(places);
+  }
 }

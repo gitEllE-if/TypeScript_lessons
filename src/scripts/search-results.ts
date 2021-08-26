@@ -1,8 +1,6 @@
-import { renderBlock, insertBlock } from './lib';
+import { renderBlock, insertBlock, removeBlock, removeBlockChilds } from './lib';
 import { Place } from './domain/place';
 import { placeStorage } from './storage';
-import { book } from './book';
-import { toggleFavorite } from './toggle-favorite';
 
 export function renderSearchStubBlock(): void {
   renderBlock(
@@ -36,10 +34,10 @@ export function renderSearchResultsBlock(): void {
         <p>Результаты поиска</p>
         <div class="search-results-filter">
             <span><i class="icon icon-filter"></i> Сортировать:</span>
-            <select>
-                <option selected="">Сначала дешёвые</option>
-                <option selected="">Сначала дорогие</option>
-                <option>Сначала ближе</option>
+            <select id="search-results-sorting">
+                <option value="ascendingPrice" selected="selected">Сначала дешёвые</option>
+                <option value="descendingPrice">Сначала дорогие</option>
+                <option value="ascendingRemoteness">Сначала ближе</option>
             </select>
         </div>
     </div>
@@ -83,7 +81,15 @@ export function renderSearchResultsItem(place: Place, placeInFavorite: boolean):
 export function putSearchResultsItems(places: Place[]): void {
   for (const place of places) {
     renderSearchResultsItem(place, placeStorage.hasItem(place))
-    document.getElementById(`favorite${place.id}`).addEventListener('click', toggleFavorite.bind(null, place));
-    document.getElementById(`book-btn${place.id}`).addEventListener('click', book.bind(null, place));
+    document.getElementById(`favorite${place.id}`).addEventListener('click', place.toggleFavEventHandler);
+    document.getElementById(`book-btn${place.id}`).addEventListener('click', place.bookEventHandler);
   }
+}
+
+export function delSearchResultsItems(places: Place[]): void {
+  for (const place of places) {
+    document.getElementById(`favorite${place.id}`).removeEventListener('click', place.toggleFavEventHandler);
+    document.getElementById(`book-btn${place.id}`).removeEventListener('click', place.bookEventHandler);
+  }
+  removeBlockChilds('search-result-list');
 }
