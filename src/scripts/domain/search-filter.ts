@@ -1,10 +1,10 @@
 export interface SearchFilter {
   checkin: Date;
   checkout: Date;
-  id?: string;
-  city?: string;
-  price?: number;
-  coordinates?: string;
+  id: string;
+  city: string;
+  price: number;
+  coordinates: string;
 }
 
 export interface BookFilter {
@@ -15,5 +15,5 @@ export interface BookFilter {
 
 export interface GetFilter {
   id: string;
-  coordinates?: string;
+  coordinates: string;
 }

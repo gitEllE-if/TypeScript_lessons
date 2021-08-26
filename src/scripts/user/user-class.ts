@@ -32,7 +32,7 @@ export class User implements UserData {
       }
       for (const key in dataObj) {
         if (key in userData) {
-          userData[key] = dataObj[key];
+          userData[key as keyof typeof userData] = dataObj[key as keyof typeof dataObj] || '';
         }
       }
       return userData;

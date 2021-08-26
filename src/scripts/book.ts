@@ -4,18 +4,15 @@ import { user } from './user';
 import { PROVIDERS } from './providers';
 
 export function book(place: Place): void {
+  if (!place.originalId || !user.searchData) {
+    return;
+  }
   user.searchData.id = place.originalId;
-  PROVIDERS[place.getProvider()].book(user.searchData)
+  PROVIDERS[place.getProvider()]?.book(user.searchData)
     .then((place) => {
-      renderToast(
-        { text: `Успешно забронировано: ${place.name}`, type: 'success' },
-        { name: null, handler: null }
-      );
+      renderToast({ text: `Успешно забронировано: ${place.name}`, type: 'success' });
     })
-    .catch((error) => {
-      renderToast(
-        { text: `Не удалось забронировать: ${error}`, type: 'error' },
-        { name: null, handler: null }
-      );
+    .catch((error: any) => {
+      renderToast({ text: `Не удалось забронировать: ${error}`, type: 'error' });
     })
 }

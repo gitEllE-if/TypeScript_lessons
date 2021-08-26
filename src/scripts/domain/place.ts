@@ -1,5 +1,5 @@
-import { book } from "../book";
-import { toggleFavorite } from "../toggle-favorite";
+import { book } from '../book';
+import { toggleFavorite } from '../toggle-favorite';
 
 export class Place {
   public readonly toggleFavEventHandler = toggleFavorite.bind(null, this);

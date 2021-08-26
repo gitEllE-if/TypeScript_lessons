@@ -1,15 +1,16 @@
 import { Place } from '../../domain/place';
 import { Provider } from '../../domain/provider';
-import { SearchFilter, BookFilter, GetFilter } from '../../domain/search-filter';
+import { SearchFilter } from '../../domain/search-filter';
 import { dateToUnixStamp } from '../../utils/date-helper';
 import { HttpHelper } from '../../utils/http-helper';
 import { PlaceResponse, PlaceListResponse, Place as HomyPlace, PlaceErrorResponse } from './response'
+import { BookFilter_homy, GetFilter_homy, SearchFilter_homy } from './search-filter';
 
 export class HomyProvider implements Provider {
   public static provider = 'homy'
   private static apiUrl = '/api';
 
-  public find(filter: SearchFilter): Promise<Place[]> {
+  public find(filter: SearchFilter_homy): Promise<Place[]> {
     return HttpHelper.fetchAsJson<PlaceListResponse>(
       HomyProvider.apiUrl + '/places?' +
       this.convertFilterToQueryStr(filter, 'find')
@@ -22,7 +23,7 @@ export class HomyProvider implements Provider {
       })
   }
 
-  public get(filter: GetFilter): Promise<Place> {
+  public get(filter: GetFilter_homy): Promise<Place> {
     return HttpHelper.fetchAsJson<PlaceResponse>(
       HomyProvider.apiUrl + '/places/' +
       this.convertFilterToQueryStr(<SearchFilter>filter, 'get')
@@ -35,7 +36,7 @@ export class HomyProvider implements Provider {
       })
   }
 
-  public book(filter: BookFilter): Promise<Place> {
+  public book(filter: BookFilter_homy): Promise<Place> {
     return HttpHelper.fetchAsJson<PlaceResponse>(
       HomyProvider.apiUrl + '/places/' +
       this.convertFilterToQueryStr(filter, 'book')
@@ -48,21 +49,22 @@ export class HomyProvider implements Provider {
       })
   }
 
-  private convertFilterToQueryStr(filter: SearchFilter, action: string): string {
+  private convertFilterToQueryStr(filter: SearchFilter_homy | BookFilter_homy | GetFilter_homy, action: string): string {
     let url = '';
     switch (action) {
       case 'find':
-        url = `&checkInDate=${dateToUnixStamp(filter.checkin)}&` +
-          `checkOutDate=${dateToUnixStamp(filter.checkout)}&` +
-          `coordinates=${filter.coordinates}`;
-        url += filter.price === null ? '' : `&maxPrice=${filter.price}`;
+        url = `&checkInDate=${dateToUnixStamp((<SearchFilter_homy>filter).checkin)}&` +
+          `checkOutDate=${dateToUnixStamp((<SearchFilter_homy>filter).checkout)}&` +
+          `coordinates=${(<SearchFilter_homy>filter).coordinates}`;
+        url += (<SearchFilter_homy>filter).price === null ? '' : `&maxPrice=${(<SearchFilter_homy>filter).price}`;
         break;
       case 'book':
-        url = `${filter.id}?checkInDate=${dateToUnixStamp(filter.checkin)}&` +
-          `checkOutDate=${dateToUnixStamp(filter.checkout)}`;
+        url = `${(<BookFilter_homy>filter).id}` +
+          `?checkInDate=${dateToUnixStamp((<BookFilter_homy>filter).checkin)}&` +
+          `checkOutDate=${dateToUnixStamp((<BookFilter_homy>filter).checkout)}`;
         break;
       case 'get':
-        url = `${filter.id}?coordinates=${filter.coordinates}`;
+        url = `${(<GetFilter_homy>filter).id}?coordinates=${(<GetFilter_homy>filter).coordinates}`;
     }
     return url;
   }

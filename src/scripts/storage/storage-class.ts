@@ -12,8 +12,8 @@ export class StorageHandler<V>{
     localStorage.setItem(this.key, JSON.stringify(value));
   }
 
-  public get(): V {
-    const valueStr: string = localStorage.getItem(this.key);
+  public get(): V | null {
+    const valueStr: string | null = localStorage.getItem(this.key);
     if (!valueStr) {
       return null;
     }
@@ -34,7 +34,7 @@ export class IterableStorage<V extends Iterable<unknown>> extends StorageHandler
 }
 
 export class MapStorage<V extends Map<number | string, unknown>> extends IterableStorage<V>{
-  public get(): V {
+  public get(): V | null {
     const value = <V>super.get();
     return value ? <V>new Map(value) : null;
   }
@@ -42,7 +42,7 @@ export class MapStorage<V extends Map<number | string, unknown>> extends Iterabl
 
 export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorage<V>{
   public toggleItem(place: PartPlace): void {
-    let placeMap: V = this.get();
+    let placeMap: V | null = this.get();
     if (!placeMap || !placeMap.size) {
       placeMap = <V>new Map([[place.id, place]]);
     }
@@ -52,11 +52,11 @@ export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorag
     this.set(<V>placeMap);
   }
   public hasItem(place: PartPlace): boolean {
-    const placeMap: V = this.get();
-    return placeMap && placeMap.size && placeMap.has(place.id);
+    const placeMap: V | null = this.get();
+    return (placeMap !== null) && (placeMap.size > 0) && placeMap.has(place.id);
   }
   public itemAmount(): number {
-    const placeMap: V = this.get();
+    const placeMap: V | null = this.get();
     return placeMap ? placeMap.size : 0;
   }
 }

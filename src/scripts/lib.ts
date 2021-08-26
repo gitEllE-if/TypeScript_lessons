@@ -1,10 +1,12 @@
 export function renderBlock(elementId: string, html: string): void {
-  const element = document.getElementById(elementId)
-  element.innerHTML = html
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.innerHTML = html;
+  }
 }
 
-export function renderToast(message: { type: string, text: string },
-  action: { name: string, handler: () => void }): void {
+export function renderToast(message?: { type: string, text: string },
+  action?: { name: string, handler: () => void }): void {
   let messageText = ''
 
   if (message != null) {
@@ -27,24 +29,26 @@ export function renderToast(message: { type: string, text: string },
       if (action != null && action.handler != null) {
         action.handler()
       }
-      renderToast(null, null)
+      renderToast()
     }
   }
 }
 
 export function insertBlock(elementId: string, html: string): void {
   const element = document.getElementById(elementId);
-  element.insertAdjacentHTML('beforeend', html);
+  if (element) {
+    element.insertAdjacentHTML('beforeend', html);
+  }
 }
 
 export function removeBlockChilds(elementId: string): void {
   const element = document.getElementById(elementId);
-  while (element.firstChild) {
+  while (element && element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
 
 export function removeBlock(elementId: string): void {
   removeBlockChilds(elementId);
-  document.getElementById(elementId).remove();
+  document.getElementById(elementId)?.remove();
 }

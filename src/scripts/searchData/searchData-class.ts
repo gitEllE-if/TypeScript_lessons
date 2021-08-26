@@ -2,7 +2,7 @@ import { ProviderName } from '../providers';
 import { SearchFormData } from './SearchFormData';
 
 export class SearchData implements SearchFormData {
-  public id?: string;
+  public id = '';
   public readonly city: string;
   public readonly coordinates: string;
   public readonly price: number;
@@ -35,21 +35,21 @@ export class SearchData implements SearchFormData {
     try {
       for (const key in searchFormData) {
         if (formData.has(key)) {
-          switch (typeof (searchFormData[key])) {
+          switch (typeof (searchFormData[key as keyof SearchFormData])) {
             case 'string':
-              searchFormData[key] = formData.get(key);
+              (searchFormData[key as keyof SearchFormData] as any) = formData.get(key);
               break;
             case 'number': {
               const nbr = Number(formData.get(key));
-              searchFormData[key] = (formData.get(key) && isFinite(nbr) && !isNaN(nbr)) ? nbr : null;
+              (searchFormData[key as keyof SearchFormData] as any) = (formData.get(key) && isFinite(nbr) && !isNaN(nbr)) ? nbr : null;
               break;
             }
             case 'object':
-              if (searchFormData[key] instanceof Date) {
-                searchFormData[key] = new Date(String(formData.get(key)));
+              if (searchFormData[key as keyof SearchFormData] instanceof Date) {
+                (searchFormData[key as keyof SearchFormData] as any) = new Date(String(formData.get(key)));
               }
-              else if (Array.isArray(searchFormData[key])) {
-                searchFormData[key] = formData.getAll(key);
+              else if (Array.isArray(searchFormData[key as keyof SearchFormData])) {
+                (searchFormData[key as keyof SearchFormData] as any) = formData.getAll(key);
               }
           }
         }
