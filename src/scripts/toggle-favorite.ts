@@ -8,7 +8,7 @@ export function toggleFavorite(place: Place): void {
   const { name, image } = place;
   const partPlace: PartPlace = { id: place.id, name: name, image: image };
   placeStorage.toggleItem(partPlace);
-  document.getElementById(`favorite${place.id}`).classList.toggle('active');
+  document.getElementById(`favorite${place.id}`)?.classList.toggle('active');
   user.favoritesAmount = placeStorage.itemAmount();
   renderUserFavoriteBlock(user.favoritesAmount);
 }

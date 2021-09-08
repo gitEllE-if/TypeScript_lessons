@@ -1,4 +1,4 @@
-import { renderBlock, insertBlock, removeBlock, removeBlockChilds } from './lib';
+import { renderBlock, insertBlock, removeBlockChilds } from './lib';
 import { Place } from './domain/place';
 import { placeStorage } from './storage';
 
@@ -81,15 +81,15 @@ export function renderSearchResultsItem(place: Place, placeInFavorite: boolean):
 export function putSearchResultsItems(places: Place[]): void {
   for (const place of places) {
     renderSearchResultsItem(place, placeStorage.hasItem(place))
-    document.getElementById(`favorite${place.id}`).addEventListener('click', place.toggleFavEventHandler);
-    document.getElementById(`book-btn${place.id}`).addEventListener('click', place.bookEventHandler);
+    document.getElementById(`favorite${place.id}`)?.addEventListener('click', place.toggleFavEventHandler);
+    document.getElementById(`book-btn${place.id}`)?.addEventListener('click', place.bookEventHandler);
   }
 }
 
 export function delSearchResultsItems(places: Place[]): void {
   for (const place of places) {
-    document.getElementById(`favorite${place.id}`).removeEventListener('click', place.toggleFavEventHandler);
-    document.getElementById(`book-btn${place.id}`).removeEventListener('click', place.bookEventHandler);
+    document.getElementById(`favorite${place.id}`)?.removeEventListener('click', place.toggleFavEventHandler);
+    document.getElementById(`book-btn${place.id}`)?.removeEventListener('click', place.bookEventHandler);
   }
   removeBlockChilds('search-result-list');
 }

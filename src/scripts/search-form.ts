@@ -12,7 +12,7 @@ export function putSearchForm(inDate?: Date, outDate?: Date): void {
     outDate = new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDate() + 2);
   }
   renderSearchFormBlock(inDate, outDate, nowDate, maxDate);
-  document.forms['search-form'].addEventListener('submit', search);
+  document.querySelector('#search-form')?.addEventListener('submit', search);
 }
 
 function renderSearchFormBlock(inDate: Date, outDate: Date, minDate: Date, maxDate: Date): void {

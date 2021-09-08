@@ -12,8 +12,8 @@ export function ascendingRemotenessCompare(a: Place, b: Place): number {
   return a.remoteness - b.remoteness;
 }
 
-export const SORTING = {
-  "ascendingPrice": ascendingPriceCompare,
-  "descendingPrice": descendingPriceCompare,
-  "ascendingRemoteness": ascendingRemotenessCompare
+export const SORTING: { [name: string]: (a: Place, b: Place) => number } = {
+  'ascendingPrice': ascendingPriceCompare,
+  'descendingPrice': descendingPriceCompare,
+  'ascendingRemoteness': ascendingRemotenessCompare
 }

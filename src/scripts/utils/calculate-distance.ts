@@ -5,7 +5,7 @@ const RADIUS_EARTH = 6371;  //километров
  * https://gis-lab.info/qa/great-circles.html
  */
 
-export function calculateDistance(a: [number, number], b: [number, number], decimalPlaceCnt: number): number {
+export function calculateDistance(a: [number, number], b: [number, number], decimalPlaceCnt: number): number | null {
   if (a === null || b === null ||
     a[0] === null || a[1] === null || b[0] === null || b[1] === null) {
     return null;
