@@ -7,4 +7,7 @@ export interface BookFilter_flat extends BookFilter {
   coordinates: string
 }
 
-export type GetFilter_flat = GetFilter
+export interface GetFilter_flat extends GetFilter {
+  checkin: Date;
+  checkout: Date;
+}

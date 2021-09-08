@@ -3,6 +3,7 @@ import { Provider } from '../../domain/provider';
 import { flatRentSdk } from '../../flat-rent-sdk';
 import { BookParameters, SearchParameters } from '../../flat-rent-sdk/flat-rent-sdk';
 import { calculateDistance } from '../../utils/calculate-distance';
+import { calculateDifferenceInDays } from '../../utils/date-helper';
 import { strToNumArr2 } from '../../utils/string-helper';
 import { Place as FlatRentPlace } from './response'
 import { BookFilter_flat, GetFilter_flat, SearchFilter_flat } from './search-filter';
@@ -14,14 +15,16 @@ export class FlatRentProvider implements Provider {
   public find(filter: SearchFilter_flat): Promise<Place[]> {
     return FlatRentProvider.sdk.search(this.convertFilterToSearchParams(filter))
       .then((response) => {
-        return this.convertPlaceListResponse(<FlatRentPlace[]>response, strToNumArr2(filter.coordinates));
+        const daysCnt = calculateDifferenceInDays(filter.checkin, filter.checkout);
+        return this.convertPlaceListResponse(<FlatRentPlace[]>response, strToNumArr2(filter.coordinates), daysCnt);
       })
   }
 
   public get(filter: GetFilter_flat): Promise<Place> {
     return FlatRentProvider.sdk.get(filter.id)
       .then((response) => {
-        return this.convertPlaceResponse(<FlatRentPlace>response, strToNumArr2(filter.coordinates));
+        const daysCnt = calculateDifferenceInDays(filter.checkin, filter.checkout);
+        return this.convertPlaceResponse(<FlatRentPlace>response, strToNumArr2(filter.coordinates), daysCnt);
       })
   }
 
@@ -51,14 +54,15 @@ export class FlatRentProvider implements Provider {
     ];
   }
 
-  private convertPlaceListResponse(items: FlatRentPlace[], coordinates: [number, number] | null): Place[] {
+  private convertPlaceListResponse(items: FlatRentPlace[], coordinates: [number, number] | null, daysCnt: number): Place[] {
     return items.map((item) => {
-      return this.convertPlaceResponse(item, coordinates)
+      return this.convertPlaceResponse(item, coordinates, daysCnt)
     })
   }
 
-  private convertPlaceResponse(item: FlatRentPlace, coordinates: [number, number] | null): Place {
+  private convertPlaceResponse(item: FlatRentPlace, coordinates: [number, number] | null, daysCnt: number): Place {
     const remoteness: number | null = coordinates ? calculateDistance(coordinates, item.coordinates, 1) : Infinity;
+    const price: number = item.totalPrice ? item.totalPrice / daysCnt : item.price || 0;
     return new Place(
       FlatRentProvider.provider,
       item.id,
@@ -67,7 +71,7 @@ export class FlatRentProvider implements Provider {
       item.details,
       remoteness !== null ? remoteness : Infinity,
       item.bookedDates,
-      item.price || item.totalPrice || 0
+      price
     )
   }
 }
