@@ -1,6 +1,6 @@
 import { Provider } from '../domain/provider';
-import { flatRentProvider } from '../providers/flat-rent';
-import { homyProvider } from '../providers/homy';
+import { flatRentProvider } from './flat-rent';
+import { homyProvider } from './homy';
 
 export type ProviderName = 'homy' | 'flat-rent';
 

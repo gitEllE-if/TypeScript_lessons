@@ -6,13 +6,13 @@ import { calculateDistance } from '../../utils/calculate-distance';
 import { calculateDifferenceInDays } from '../../utils/date-helper';
 import { strToNumArr2 } from '../../utils/string-helper';
 import { Place as FlatRentPlace } from './response'
-import { BookFilter_flat, GetFilter_flat, SearchFilter_flat } from './search-filter';
+import { BookFilterFlat, GetFilterFlat, SearchFilterFlat } from './search-filter';
 
 export class FlatRentProvider implements Provider {
   public static provider = 'flat-rent';
   private static sdk = flatRentSdk;
 
-  public find(filter: SearchFilter_flat): Promise<Place[]> {
+  public find(filter: SearchFilterFlat): Promise<Place[]> {
     return FlatRentProvider.sdk.search(this.convertFilterToSearchParams(filter))
       .then((response) => {
         const daysCnt = calculateDifferenceInDays(filter.checkin, filter.checkout);
@@ -20,7 +20,7 @@ export class FlatRentProvider implements Provider {
       })
   }
 
-  public get(filter: GetFilter_flat): Promise<Place> {
+  public get(filter: GetFilterFlat): Promise<Place> {
     return FlatRentProvider.sdk.get(filter.id)
       .then((response) => {
         const daysCnt = calculateDifferenceInDays(filter.checkin, filter.checkout);
@@ -28,14 +28,14 @@ export class FlatRentProvider implements Provider {
       })
   }
 
-  public book(filter: BookFilter_flat): Promise<Place> {
+  public book(filter: BookFilterFlat): Promise<Place> {
     return FlatRentProvider.sdk.book(...this.convertFilterToBookParams(filter))
       .then(() => {
         return this.get(filter)
       })
   }
 
-  private convertFilterToSearchParams(filter: SearchFilter_flat): SearchParameters {
+  private convertFilterToSearchParams(filter: SearchFilterFlat): SearchParameters {
     const { city, checkin, checkout, price } = filter;
     return {
       city: city ? city : '',
@@ -45,7 +45,7 @@ export class FlatRentProvider implements Provider {
     };
   }
 
-  private convertFilterToBookParams(filter: BookFilter_flat): BookParameters {
+  private convertFilterToBookParams(filter: BookFilterFlat): BookParameters {
     const { id, checkin, checkout } = filter;
     return [
       id,

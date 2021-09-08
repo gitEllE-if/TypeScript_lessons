@@ -13,7 +13,7 @@ export class StorageHandler<V>{
   }
 
   public get(): V | null {
-    const valueStr: string | null = localStorage.getItem(this.key);
+    const valueStr = localStorage.getItem(this.key);
     if (!valueStr) {
       return null;
     }
@@ -42,7 +42,7 @@ export class MapStorage<V extends Map<number | string, unknown>> extends Iterabl
 
 export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorage<V>{
   public toggleItem(place: PartPlace): void {
-    let placeMap: V | null = this.get();
+    let placeMap = this.get();
     if (!placeMap || !placeMap.size) {
       placeMap = <V>new Map([[place.id, place]]);
     }
@@ -52,11 +52,11 @@ export class PlaceMapStorage<V extends Map<string, PartPlace>> extends MapStorag
     this.set(<V>placeMap);
   }
   public hasItem(place: PartPlace): boolean {
-    const placeMap: V | null = this.get();
+    const placeMap = this.get();
     return (placeMap !== null) && (placeMap.size > 0) && placeMap.has(place.id);
   }
   public itemAmount(): number {
-    const placeMap: V | null = this.get();
+    const placeMap = this.get();
     return placeMap ? placeMap.size : 0;
   }
 }
